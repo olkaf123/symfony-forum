@@ -81,10 +81,9 @@ class Post
     private $comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\PostMark", inversedBy="post")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="App\Entity\PostMark", mappedBy="post", orphanRemoval=true)
      */
-    private $postMark;
+    private $postMarks;
 
     /**
      * Post constructor.
@@ -92,6 +91,7 @@ class Post
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->postMarks = new ArrayCollection();
     }
 
     /**
@@ -218,20 +218,32 @@ class Post
     }
 
     /**
-     * @return PostMark|null
+     * @return Collection|PostMark[]
      */
-    public function getPostMark(): ?PostMark
+    public function getPostMarks(): Collection
     {
-        return $this->postMark;
+        return $this->postMarks;
     }
 
-    /**
-     * @param PostMark|null $postMark
-     * @return $this
-     */
-    public function setPostMark(?PostMark $postMark): self
+    public function addPostMark(PostMark $postMark): self
     {
-        $this->postMark = $postMark;
+        if (!$this->postMarks->contains($postMark)) {
+            $this->postMarks[] = $postMark;
+            $postMark->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostMark(PostMark $postMark): self
+    {
+        if ($this->postMarks->contains($postMark)) {
+            $this->postMarks->removeElement($postMark);
+            // set the owning side to null (unless already changed)
+            if ($postMark->getPost() === $this) {
+                $postMark->setPost(null);
+            }
+        }
 
         return $this;
     }

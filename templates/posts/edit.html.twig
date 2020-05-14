@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'posts.edit.title'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'posts.edit.h1'|trans }}</h1>
+    {{ form_start(form, { method: 'PUT', action: url('post_edit', {'id': post.id}) }) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="{{ 'action.save'|trans }}" class="btn btn-primary"/>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'categories.edit.title'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'categories.edit.h1'|trans }}</h1>
+    {{ form_start(form, { method: 'PUT', action: url('category_edit', {'id': category.id}) }) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="{{ 'action.save'|trans }}" class="btn btn-primary" />
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'posts.delete.title'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'posts.delete.h1'|trans }}</h1>
+    {{ form_start(form, { method: 'DELETE', action: url('post_delete', {'id': post.id}) }) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="{{ 'action_delete'|trans }}" class="btn btn-primary" />
+    {{ form_end(form) }}
+{% endblock %}

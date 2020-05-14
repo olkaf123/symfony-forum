@@ -5,6 +5,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -55,10 +57,14 @@ class Comment
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CommentMark", inversedBy="comment")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="App\Entity\CommentMark", mappedBy="comment", orphanRemoval=true)
      */
-    private $commentMark;
+    private $commentMarks;
+
+    public function __construct()
+    {
+        $this->commentMarks = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -126,20 +132,32 @@ class Comment
     }
 
     /**
-     * @return CommentMark|null
+     * @return Collection|CommentMark[]
      */
-    public function getCommentMark(): ?CommentMark
+    public function getCommentMarks(): Collection
     {
-        return $this->commentMark;
+        return $this->commentMarks;
     }
 
-    /**
-     * @param CommentMark|null $commentMark
-     * @return $this
-     */
-    public function setCommentMark(?CommentMark $commentMark): self
+    public function addCommentMark(CommentMark $commentMark): self
     {
-        $this->commentMark = $commentMark;
+        if (!$this->commentMarks->contains($commentMark)) {
+            $this->commentMarks[] = $commentMark;
+            $commentMark->setComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentMark(CommentMark $commentMark): self
+    {
+        if ($this->commentMarks->contains($commentMark)) {
+            $this->commentMarks->removeElement($commentMark);
+            // set the owning side to null (unless already changed)
+            if ($commentMark->getComment() === $this) {
+                $commentMark->setComment(null);
+            }
+        }
 
         return $this;
     }

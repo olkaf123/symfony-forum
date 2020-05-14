@@ -109,15 +109,14 @@ class User implements UserInterface
     private $comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\PostMark", inversedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\CommentMark", mappedBy="user", orphanRemoval=true)
      */
-    private $postMark;
+    private $commentMarks;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CommentMark", inversedBy="user")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="App\Entity\PostMark", mappedBy="user", orphanRemoval=true)
      */
-    private $commentMark;
+    private $postMarks;
 
     /**
      * User constructor.
@@ -126,6 +125,8 @@ class User implements UserInterface
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->commentMarks = new ArrayCollection();
+        $this->postMarks = new ArrayCollection();
     }
 
     /**
@@ -338,39 +339,63 @@ class User implements UserInterface
     }
 
     /**
-     * @return PostMark|null
+     * @return Collection|CommentMark[]
      */
-    public function getPostMark(): ?PostMark
+    public function getCommentMarks(): Collection
     {
-        return $this->postMark;
+        return $this->commentMarks;
     }
 
-    /**
-     * @param PostMark|null $postMark
-     * @return $this
-     */
-    public function setPostMark(?PostMark $postMark): self
+    public function addCommentMark(CommentMark $commentMark): self
     {
-        $this->postMark = $postMark;
+        if (!$this->commentMarks->contains($commentMark)) {
+            $this->commentMarks[] = $commentMark;
+            $commentMark->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentMark(CommentMark $commentMark): self
+    {
+        if ($this->commentMarks->contains($commentMark)) {
+            $this->commentMarks->removeElement($commentMark);
+            // set the owning side to null (unless already changed)
+            if ($commentMark->getUser() === $this) {
+                $commentMark->setUser(null);
+            }
+        }
 
         return $this;
     }
 
     /**
-     * @return CommentMark|null
+     * @return Collection|PostMark[]
      */
-    public function getCommentMark(): ?CommentMark
+    public function getPostMarks(): Collection
     {
-        return $this->commentMark;
+        return $this->postMarks;
     }
 
-    /**
-     * @param CommentMark|null $commentMark
-     * @return $this
-     */
-    public function setCommentMark(?CommentMark $commentMark): self
+    public function addPostMark(PostMark $postMark): self
     {
-        $this->commentMark = $commentMark;
+        if (!$this->postMarks->contains($postMark)) {
+            $this->postMarks[] = $postMark;
+            $postMark->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostMark(PostMark $postMark): self
+    {
+        if ($this->postMarks->contains($postMark)) {
+            $this->postMarks->removeElement($postMark);
+            // set the owning side to null (unless already changed)
+            if ($postMark->getUser() === $this) {
+                $postMark->setUser(null);
+            }
+        }
 
         return $this;
     }

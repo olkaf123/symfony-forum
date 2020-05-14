@@ -5,8 +5,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -47,23 +45,16 @@ class PostMark
     private $mark;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="postMark", orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="postMarks")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $post;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="postMark")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="postMarks")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
-
-    /**
-     * PostMark constructor.
-     */
-    public function __construct()
-    {
-        $this->post = new ArrayCollection();
-        $this->user = new ArrayCollection();
-    }
 
     /**
      * @return int|null
@@ -92,80 +83,26 @@ class PostMark
         return $this;
     }
 
-    /**
-     * @return Collection|Post[]
-     */
-    public function getPost(): Collection
+    public function getPost(): ?Post
     {
         return $this->post;
     }
 
-    /**
-     * @param Post $post
-     * @return $this
-     */
-    public function addPost(Post $post): self
+    public function setPost(?Post $post): self
     {
-        if (!$this->post->contains($post)) {
-            $this->post[] = $post;
-            $post->setPostMark($this);
-        }
+        $this->post = $post;
 
         return $this;
     }
 
-    /**
-     * @param Post $post
-     * @return $this
-     */
-    public function removePost(Post $post): self
-    {
-        if ($this->post->contains($post)) {
-            $this->post->removeElement($post);
-            // set the owning side to null (unless already changed)
-            if ($post->getPostMark() === $this) {
-                $post->setPostMark(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getUser(): Collection
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param User $user
-     * @return $this
-     */
-    public function addUser(User $user): self
+    public function setUser(?User $user): self
     {
-        if (!$this->user->contains($user)) {
-            $this->user[] = $user;
-            $user->setPostMark($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param User $user
-     * @return $this
-     */
-    public function removeUser(User $user): self
-    {
-        if ($this->user->contains($user)) {
-            $this->user->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getPostMark() === $this) {
-                $user->setPostMark(null);
-            }
-        }
+        $this->user = $user;
 
         return $this;
     }

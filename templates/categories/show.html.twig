@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block body %}
+    <div class="category" style="margin-top:35px;">
+        {{ category.name }}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="{{ url('add-post', {id: category.id}) }}" class="btn btn-default" style="float: right;">
+          <span class="glyphicon glyphicon-plus"></span> {{ 'add.post'|trans }}
+        </a>
+        {% endif %}
+    </div>
+    <div class="wrap">
+        <div class="na bold">{{ 'post.name'|trans }}</div>
+        <div class="co bold">{{ 'post.comments'|trans }}</div>
+        <div class="au text-center bold">{{ 'post.author'|trans }}</div>
+    </div>
+    <hr style="margin-top:0;">
+    {% if category.posts|length > 0 %}
+        {% for post in category.posts %}
+            <div class="wrap">
+                <div class="na">
+                    <a href="{{ url('post_show', {'id': post.id}) }}">
+                        <span class="glyphicon glyphicon-list-alt" style="font-size: 20px;"></span>
+                        {{ post.topic }}<br>
+                    </a>
+                    (<a href="{{ url('post_edit', {id: post.id}) }}">{{ 'edit.post'|trans }}</a> /
+                    <a href="{{ url('post_delete', {id: post.id}) }}">{{ 'delete.post'|trans }}</a>)
+                </div>
+                <div class="co text-center">{{ post.comments|length }}</div>
+                <div class="au text-center">
+                    <a href="mailto:{{ post.user.email }}">
+                        {{ post.user.details.name }} {{ post.user.details.surname }}<br><i>{{ post.user.email }}</i>
+                    </a>
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <div class="text-center bold">
+            {{ 'posts.empty'|trans }}
+        </div>
+        <hr>
+    {% endif %}
+{% endblock %}

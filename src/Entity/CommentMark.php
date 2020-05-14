@@ -47,23 +47,16 @@ class CommentMark
     private $mark;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="commentMark", orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Comment", inversedBy="commentMarks")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $comment;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="commentMark", orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="commentMarks")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
-
-    /**
-     * CommentMark constructor.
-     */
-    public function __construct()
-    {
-        $this->comment = new ArrayCollection();
-        $this->user = new ArrayCollection();
-    }
 
     /**
      * @return int|null
@@ -92,80 +85,26 @@ class CommentMark
         return $this;
     }
 
-    /**
-     * @return Collection|Comment[]
-     */
-    public function getComment(): Collection
+    public function getComment(): ?Comment
     {
         return $this->comment;
     }
 
-    /**
-     * @param Comment $comment
-     * @return $this
-     */
-    public function addComment(Comment $comment): self
+    public function setComment(?Comment $comment): self
     {
-        if (!$this->comment->contains($comment)) {
-            $this->comment[] = $comment;
-            $comment->setCommentMark($this);
-        }
+        $this->comment = $comment;
 
         return $this;
     }
 
-    /**
-     * @param Comment $comment
-     * @return $this
-     */
-    public function removeComment(Comment $comment): self
-    {
-        if ($this->comment->contains($comment)) {
-            $this->comment->removeElement($comment);
-            // set the owning side to null (unless already changed)
-            if ($comment->getCommentMark() === $this) {
-                $comment->setCommentMark(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getUser(): Collection
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param User $user
-     * @return $this
-     */
-    public function addUser(User $user): self
+    public function setUser(?User $user): self
     {
-        if (!$this->user->contains($user)) {
-            $this->user[] = $user;
-            $user->setCommentMark($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param User $user
-     * @return $this
-     */
-    public function removeUser(User $user): self
-    {
-        if ($this->user->contains($user)) {
-            $this->user->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getCommentMark() === $this) {
-                $user->setCommentMark(null);
-            }
-        }
+        $this->user = $user;
 
         return $this;
     }

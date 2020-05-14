@@ -1,12 +1,166 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheets %}
+            <!-- Bootstrap -->
+            <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+            <style>
+                body {
+                    background: #f1f1f1;
+                }
+
+                .col-sm-8.text-left {
+                    background: #fff;
+                }
+
+                .category {
+                    background: #101010;
+                    color: white;
+                    font-size: 25px;
+                    padding: 10px;
+                    margin: 0 -15px;
+                }
+
+                hr {
+                    border-top: 1px solid #c3c3c3;
+                }
+
+                .wrap {
+                    margin-top: 20px;
+                    display: flex;
+                }
+
+                .na {
+                    width: 60%;
+                }
+
+                .co {
+                    width: 10%;
+                }
+
+                .au {
+                    width: 30%;
+                }
+
+                .bold {
+                    font-weight: bold;
+                }
+
+                /* Remove the navbar's default margin-bottom and rounded borders */
+                .navbar {
+                    margin-bottom: 0;
+                    border-radius: 0;
+                }
+
+                input,
+                textarea {
+                    margin-bottom: 25px;
+                }
+
+                /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+                .row.content {
+                    height: 450px
+                }
+
+                /* Set gray background color and 100% height */
+                .sidenav {
+                    padding-top: 20px;
+                    background-color: #f1f1f1;
+                    height: 100%;
+                }
+
+                .alert {
+                    margin-bottom: 0;
+                }
+
+                .ad {
+                    margin-bottom: 20px;
+                    width: 70%
+                }
+
+                #content {
+                    min-height: 450px;
+                }
+
+                /* Set black background color, white text and some padding */
+                footer {
+                    background-color: #555;
+                    color: white;
+                    padding: 15px;
+                }
+
+                /* On small screens, set height to 'auto' for sidenav and grid */
+                @media screen and (max-width: 767px) {
+                    .sidenav {
+                        height: auto;
+                        padding: 15px;
+                    }
+
+                    .row.content {
+                        height: auto;
+                    }
+                }
+            </style>
+        {% endblock %}
+
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ url('main_index') }}">{{ 'logo'|trans }}</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li><a href="">{{ 'my.profile'|trans }}</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <li><a href=""><span class="glyphicon glyphicon-log-out"></span> {{ 'logout'|trans }}</a></li>
+                        {% else %}
+                            <li><a href=""><span class="glyphicon glyphicon-upload"></span> {{ 'register'|trans }}</a></li>
+                            <li><a href=""><span class="glyphicon glyphicon-log-in"></span> {{ 'login'|trans }}</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        {{ include('flash_messages.html.twig') }}
+
+        <div class="container-fluid text-center">
+            <div class="row content">
+                <div class="col-sm-2 sidenav">
+                    <a href="{{ url('category_index') }}" class="btn-default btn ad">{{ 'categories.all'|trans }}</a>
+                    <a href="{{ url('category_create') }}" class="btn-default btn ad">{{ 'categories.add'|trans }}</a>
+                </div>
+                <div class="col-sm-8 text-left" id="content">
+                    {% block body %}{% endblock %}
+                </div>
+                <div class="col-sm-2 sidenav">
+                </div>
+            </div>
+        </div>
+
+        <footer class="container-fluid text-center">
+            <p>Copyright &copy; Aleksandra Filipek {{ "now"|date('Y') }}</p>
+        </footer>
+
+
+        {% block javascripts %}
+            <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+                    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+                    crossorigin="anonymous"></script>
+            <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
     </body>
 </html>
