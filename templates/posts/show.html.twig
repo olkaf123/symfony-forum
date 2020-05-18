@@ -8,6 +8,9 @@
         .last {
             margin-bottom: 20px;
         }
+        .pagination {
+            float: right;
+        }
     </style>
 {% endblock %}
 
@@ -29,13 +32,14 @@
             </a>
         </div>
         <div style="position:absolute;right:20px;">
-            {% if alreadyMarked == 1 %}
-                <a href="">
+            {% if alreadyMarked == false %}
+                <a href="{{ url('post_mark', {'id': post.id, 'bool': 0}) }}">
                     <span class="glyphicon glyphicon-thumbs-down"></span>
                 </a>
             {% else %}
                 <span class="glyphicon glyphicon-thumbs-down"></span>
             {% endif %}
+
             {% if mark > 0 %}
                 <span style="color:#3c763d;">{{ mark }}</span>
             {% elseif mark < 0 %}
@@ -43,8 +47,9 @@
             {% else %}
                 {{ mark }}
             {% endif %}
-            {% if alreadyMarked == 1 %}
-                <a href="">
+
+            {% if alreadyMarked == false %}
+                <a href="{{ url('post_mark', {'id': post.id, 'bool': 1}) }}">
                     <span class="glyphicon glyphicon-thumbs-up" style="margin-right: 30px;"></span>
                 </a>
             {% else %}
@@ -58,15 +63,54 @@
     </div>
     <div style="margin-top: 80px;background:#a3a3a3;padding: 10px;">
         {{ 'post.comments'|trans }}
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <a href="" class="btn btn-default" style="float: right;margin-top: -7px;">
-                <span class="glyphicon glyphicon-plus"></span> {{ 'add.comment'|trans }}
-            </a>
-        {% endif %}
+        <a href="{{ url('comment_create', {'id': post.id}) }}" class="btn btn-default" style="float: right;margin-top: -7px;">
+            <span class="glyphicon glyphicon-plus"></span> {{ 'add.comment'|trans }}
+        </a>
     </div>
     <div style="padding: 0 20px 20px;">
-        {% if post.comments|length > 0 %}
-            {# comments #}
+        {% if comments|length > 0 %}
+            {% for comment in comments %}
+                <div class="wrap">
+                    <div class="na">
+                        <a href="mailto:{{ post.user.email }}" class="bold">
+                            {{ post.user.details.name }} {{ post.user.details.surname }}
+                        </a>
+                        (<a href="{{ url('comment_edit', {id: comment.id}) }}">{{ 'edit.comment'|trans }}</a> /
+                        <a href="{{ url('comment_delete', {id: comment.id}) }}">{{ 'delete.comment'|trans }}</a>)
+                    </div>
+                    <div style="position:absolute;right:40px;">
+                        {% if commentMarkRepository.alreadyVoted(comment, app.user) == false %}
+                            <a href="{{ url('comment_mark', {'id': comment.id, 'bool': 0}) }}">
+                                <span class="glyphicon glyphicon-thumbs-down"></span>
+                            </a>
+                        {% else %}
+                            <span class="glyphicon glyphicon-thumbs-down"></span>
+                        {% endif %}
+
+                        {% if commentMarkRepository.countMarkValue(comment) > 0 %}
+                            <span style="color:#3c763d;">{{ commentMarkRepository.countMarkValue(comment) }}</span>
+                        {% elseif commentMarkRepository.countMarkValue(comment) < 0 %}
+                            <span style="color:#a94442;">{{ commentMarkRepository.countMarkValue(comment) }}</span>
+                        {% else %}
+                            {{ commentMarkRepository.countMarkValue(comment) }}
+                        {% endif %}
+
+                        {% if commentMarkRepository.alreadyVoted(comment, app.user) == false %}
+                            <a href="{{ url('comment_mark', {'id': comment.id, 'bool': 1}) }}">
+                                <span class="glyphicon glyphicon-thumbs-up" style="margin-right: 30px;"></span>
+                            </a>
+                        {% else %}
+                            <span class="glyphicon glyphicon-thumbs-up" style="margin-right: 30px;"></span>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr style="margin-top:0;">
+                <div style="padding: 0 0 10px 20px">
+                    {{ comment.comment }}
+                </div>
+            {% endfor %}
+
+            {{ knp_pagination_render(comments) }}
         {% else %}
             <div class="last text-center">
                 {{ 'comments.empty'|trans }}

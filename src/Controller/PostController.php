@@ -7,9 +7,14 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\PostMark;
 use App\Form\PostType;
+use App\Repository\CommentMarkRepository;
+use App\Repository\CommentRepository;
+use App\Repository\PostMarkRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,9 +31,18 @@ class PostController extends AbstractController
     /**
      * Show action.
      *
-     * @param Post $post Post entity
+     * @param Request               $request               Request
+     * @param Post                  $post                  Post entity
+     * @param CommentRepository     $commentRepository     Comment Repository
+     * @param CommentMarkRepository $commentMarkRepository Comment Mark Repository
+     * @param PostMarkRepository    $postMarkRepository    Post Mark Repository
+     * @param UserRepository        $userRepository        User Repository
+     * @param PaginatorInterface    $paginator             Paginator Interface
      *
      * @return Response HTTP response
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      *
      * @Route(
      *     "/{id}",
@@ -37,11 +51,16 @@ class PostController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(Post $post): Response
+    public function show(Request $request, Post $post, CommentRepository $commentRepository, CommentMarkRepository $commentMarkRepository, PostMarkRepository $postMarkRepository, UserRepository $userRepository, PaginatorInterface $paginator): Response
     {
-        $comments = [];         //paginacja
-        $mark = 5;              //funkcja do obliczania oceny
-        $alreadyMarked = false; //funkcja sprawdzająca czy user już oceniał
+        $comments = $pagination = $paginator->paginate(
+            $commentRepository->queryAllByPost($post),
+            $request->query->getInt('page', 1),
+            CommentRepository::PAGINATOR_ITEMS_PER_PAGE
+        );
+        $mark = $postMarkRepository->countMarkValue($post);
+        $user = $userRepository->find(1); //zamienić na zalogowanego
+        $alreadyMarked = $postMarkRepository->alreadyVoted($post, $user);
 
         return $this->render(
             'posts/show.html.twig',
@@ -50,6 +69,7 @@ class PostController extends AbstractController
                 'comments' => $comments,
                 'mark' => $mark,
                 'alreadyMarked' => $alreadyMarked,
+                'commentMarkRepository' => $commentMarkRepository,
             ]
         );
     }
@@ -101,11 +121,11 @@ class PostController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Entity\Post                          $post           Post entity
-     * @param \App\Repository\PostRepository            $postRepository Post repository
+     * @param Request        $request        HTTP request
+     * @param Post           $post           Post entity
+     * @param PostRepository $postRepository Post repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -181,5 +201,47 @@ class PostController extends AbstractController
                 'post' => $post,
             ]
         );
+    }
+
+    /**
+     * Mark action.
+     *
+     * @param Post               $post               Post entity
+     * @param int                $bool               boolean
+     * @param PostMarkRepository $postMarkRepository Post Mark Repository
+     * @param UserRepository     $userRepository     User Repository
+     *
+     * @return Response HTTP response
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/mark/{bool}",
+     *     methods={"GET"},
+     *     name="post_mark",
+     *     requirements={"id": "[1-9]\d*", "bool": "0|1"},
+     * )
+     */
+    public function mark(Post $post, int $bool, PostMarkRepository $postMarkRepository, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->find(1); //zamienić na zalogowanego
+        $alreadyMarked = $postMarkRepository->alreadyVoted($post, $user);
+        if ($alreadyMarked) {
+            $this->addFlash('danger', 'message.permission.denied');
+
+            return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
+        }
+
+        $mark = new PostMark();
+        $mark->setUser($user);
+        $mark->setPost($post);
+        $mark->setMark($bool ? 1 : -1);
+        $postMarkRepository->save($mark);
+        $this->addFlash('success', 'message.added.successfully');
+
+        return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
     }
 }

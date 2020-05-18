@@ -5,11 +5,9 @@
 {% block body %}
     <div class="category" style="margin-top:35px;">
         {{ category.name }}
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <a href="{{ url('add-post', {id: category.id}) }}" class="btn btn-default" style="float: right;">
+        <a href="{{ url('post_create', {id: category.id}) }}" class="btn btn-default" style="float: right;">
           <span class="glyphicon glyphicon-plus"></span> {{ 'add.post'|trans }}
         </a>
-        {% endif %}
     </div>
     <div class="wrap">
         <div class="na bold">{{ 'post.name'|trans }}</div>
