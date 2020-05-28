@@ -19,32 +19,31 @@ class DetailsRepository extends ServiceEntityRepository
         parent::__construct($registry, Details::class);
     }
 
-    // /**
-    //  * @return Details[] Returns an array of Details objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Save record.
+     *
+     * @param \App\Entity\Details $details Details entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(Details $details): void
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $this->_em->persist($details);
+        $this->_em->flush($details);
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Details
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\Details $details Details entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(Details $details): void
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $this->_em->remove($details);
+        $this->_em->flush($details);
     }
-    */
 }

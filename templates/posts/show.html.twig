@@ -72,8 +72,8 @@
             {% for comment in comments %}
                 <div class="wrap">
                     <div class="na">
-                        <a href="mailto:{{ post.user.email }}" class="bold">
-                            {{ post.user.details.name }} {{ post.user.details.surname }}
+                        <a href="mailto:{{ comment.user.email }}" class="bold">
+                            {{ comment.user.details.name }} {{ comment.user.details.surname }}
                         </a>
                         (<a href="{{ url('comment_edit', {id: comment.id}) }}">{{ 'edit.comment'|trans }}</a> /
                         <a href="{{ url('comment_delete', {id: comment.id}) }}">{{ 'delete.comment'|trans }}</a>)

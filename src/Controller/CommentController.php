@@ -11,7 +11,6 @@ use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CommentMarkRepository;
 use App\Repository\CommentRepository;
-use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,12 +43,12 @@ class CommentController extends AbstractController
      *     name="comment_create",
      * )
      */
-    public function create(Request $request, Post $post, CommentRepository $commentRepository, UserRepository $userRepository): Response
+    public function create(Request $request, Post $post, CommentRepository $commentRepository): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
-        $user = $userRepository->find(1); //zamienić na zalogowanego
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setPost($post);
@@ -160,7 +159,6 @@ class CommentController extends AbstractController
      * @param Comment               $comment               Comment entity
      * @param int                   $bool                  boolean
      * @param CommentMarkRepository $commentMarkRepository Comment Mark Repository
-     * @param UserRepository        $userRepository        User Repository
      *
      * @return Response HTTP response
      *
@@ -176,9 +174,9 @@ class CommentController extends AbstractController
      *     requirements={"id": "[1-9]\d*", "bool": "0|1"},
      * )
      */
-    public function mark(Comment $comment, int $bool, CommentMarkRepository $commentMarkRepository, UserRepository $userRepository): Response
+    public function mark(Comment $comment, int $bool, CommentMarkRepository $commentMarkRepository): Response
     {
-        $user = $userRepository->find(1); //zamienić na zalogowanego
+        $user = $this->getUser();
         $alreadyMarked = $commentMarkRepository->alreadyVoted($comment, $user);
         if ($alreadyMarked) {
             $this->addFlash('danger', 'message.permission.denied');
@@ -188,7 +186,7 @@ class CommentController extends AbstractController
 
         $mark = new CommentMark();
         $mark->setUser($user);
-        $mark->setPost($comment);
+        $mark->setComment($comment);
         $mark->setMark($bool ? 1 : -1);
         $commentMarkRepository->save($mark);
         $this->addFlash('success', 'message.added.successfully');

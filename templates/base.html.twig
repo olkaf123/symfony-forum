@@ -125,10 +125,10 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                            <li><a href=""><span class="glyphicon glyphicon-log-out"></span> {{ 'logout'|trans }}</a></li>
+                            <li><a href="{{ url('app_logout') }}"><span class="glyphicon glyphicon-log-out"></span> {{ 'logout'|trans }}</a></li>
                         {% else %}
-                            <li><a href=""><span class="glyphicon glyphicon-upload"></span> {{ 'register'|trans }}</a></li>
-                            <li><a href=""><span class="glyphicon glyphicon-log-in"></span> {{ 'login'|trans }}</a></li>
+                            <li><a href="{{ url('app_register') }}"><span class="glyphicon glyphicon-upload"></span> {{ 'register'|trans }}</a></li>
+                            <li><a href="{{ url('app_login') }}"><span class="glyphicon glyphicon-log-in"></span> {{ 'login'|trans }}</a></li>
                         {% endif %}
                     </ul>
                 </div>

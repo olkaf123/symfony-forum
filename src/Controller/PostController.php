@@ -13,7 +13,6 @@ use App\Repository\CommentMarkRepository;
 use App\Repository\CommentRepository;
 use App\Repository\PostMarkRepository;
 use App\Repository\PostRepository;
-use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -36,7 +35,6 @@ class PostController extends AbstractController
      * @param CommentRepository     $commentRepository     Comment Repository
      * @param CommentMarkRepository $commentMarkRepository Comment Mark Repository
      * @param PostMarkRepository    $postMarkRepository    Post Mark Repository
-     * @param UserRepository        $userRepository        User Repository
      * @param PaginatorInterface    $paginator             Paginator Interface
      *
      * @return Response HTTP response
@@ -51,7 +49,7 @@ class PostController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(Request $request, Post $post, CommentRepository $commentRepository, CommentMarkRepository $commentMarkRepository, PostMarkRepository $postMarkRepository, UserRepository $userRepository, PaginatorInterface $paginator): Response
+    public function show(Request $request, Post $post, CommentRepository $commentRepository, CommentMarkRepository $commentMarkRepository, PostMarkRepository $postMarkRepository, PaginatorInterface $paginator): Response
     {
         $comments = $pagination = $paginator->paginate(
             $commentRepository->queryAllByPost($post),
@@ -59,7 +57,7 @@ class PostController extends AbstractController
             CommentRepository::PAGINATOR_ITEMS_PER_PAGE
         );
         $mark = $postMarkRepository->countMarkValue($post);
-        $user = $userRepository->find(1); //zamienić na zalogowanego
+        $user = $this->getUser();
         $alreadyMarked = $postMarkRepository->alreadyVoted($post, $user);
 
         return $this->render(
@@ -93,12 +91,12 @@ class PostController extends AbstractController
      *     name="post_create",
      * )
      */
-    public function create(Request $request, Category $category, PostRepository $postRepository, UserRepository $userRepository): Response
+    public function create(Request $request, Category $category, PostRepository $postRepository): Response
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
-        $user = $userRepository->find(1); //zamienić na zalogowanego
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $post->setCategory($category);
@@ -209,7 +207,6 @@ class PostController extends AbstractController
      * @param Post               $post               Post entity
      * @param int                $bool               boolean
      * @param PostMarkRepository $postMarkRepository Post Mark Repository
-     * @param UserRepository     $userRepository     User Repository
      *
      * @return Response HTTP response
      *
@@ -225,9 +222,9 @@ class PostController extends AbstractController
      *     requirements={"id": "[1-9]\d*", "bool": "0|1"},
      * )
      */
-    public function mark(Post $post, int $bool, PostMarkRepository $postMarkRepository, UserRepository $userRepository): Response
+    public function mark(Post $post, int $bool, PostMarkRepository $postMarkRepository): Response
     {
-        $user = $userRepository->find(1); //zamienić na zalogowanego
+        $user = $this->getUser();
         $alreadyMarked = $postMarkRepository->alreadyVoted($post, $user);
         if ($alreadyMarked) {
             $this->addFlash('danger', 'message.permission.denied');
