@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'login'|trans }}{% endblock %}
+{% block title %}edit!{% endblock %}
 
 {% block body %}
-    <h1>{{ 'add.user'|trans }}</h1>
-    {{ form_start(form, { method: 'POST', action: url('app_register') }) }}
+    <h1>{{ 'edit.user'|trans }}</h1>
+    {{ form_start(form, { method: 'POST', action: url('app_edit') }) }}
     {{ form_widget(form) }}
     <input type="submit" value="{{ 'action.save'|trans }}" class="btn btn-primary" />
     {{ form_end(form) }}

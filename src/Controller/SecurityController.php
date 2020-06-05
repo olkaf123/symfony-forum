@@ -87,4 +87,49 @@ class SecurityController extends AbstractController
             ]
         );
     }
+
+    /**
+     * Create action.
+     *
+     * @param Request                      $request           HTTP request
+     * @param UserRepository               $userRepository    User repository
+     * @param DetailsRepository            $detailsRepository Details repository
+     * @param UserPasswordEncoderInterface $encoder           Password encoder
+     *
+     * @return Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/edit",
+     *     methods={"GET", "POST"},
+     *     name="app_edit",
+     * )
+     */
+    public function edit(Request $request, UserRepository $userRepository, DetailsRepository $detailsRepository, UserPasswordEncoderInterface $encoder): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
+            $userRepository->save($user);
+            $details = $user->getDetails();
+            $details->setName($form['name']->getData());
+            $details->setSurname($form['surname']->getData());
+            $detailsRepository->save($details);
+            $this->addFlash('success', 'message.updated.successfully');
+
+            return $this->redirectToRoute('app_edit');
+        }
+
+        return $this->render(
+            'security/edit.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
+    }
 }

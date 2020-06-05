@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="pl" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="comments.edit.title">
+                <source>comments.edit.title</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="comments.edit.h1">
+                <source>comments.edit.h1</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="action.save">
+                <source>action.save</source>
+                <target>Zaloguj</target>
+            </trans-unit>
+            <trans-unit id="comments.delete.title">
+                <source>comments.delete.title</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="comments.delete.h1">
+                <source>comments.delete.h1</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="comments.add.title">
+                <source>comments.add.title</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="comments.add.h1">
+                <source>comments.add.h1</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="main_title">
+                <source>main_title</source>
+                <target>Strona główna</target>
+            </trans-unit>
+            <trans-unit id="welcome">
+                <source>welcome</source>
+                <target>Witaj na stronie forum</target>
+            </trans-unit>
+            <trans-unit id="main.txt">
+                <source>main.txt</source>
+                <target>poniżej znajdziesz wszystkie działy</target>
+            </trans-unit>
+            <trans-unit id="main.txt2">
+                <source>main.txt2</source>
+                <target>po zalogowaniu się można dodawac i komentowac posty</target>
+            </trans-unit>
+            <trans-unit id="add.post">
+                <source>add.post</source>
+                <target>dodaj post</target>
+            </trans-unit>
+            <trans-unit id="view.category">
+                <source>view.category</source>
+                <target>podgląd postów w dziale</target>
+            </trans-unit>
+            <trans-unit id="post.name">
+                <source>post.name</source>
+                <target>Tytuł</target>
+            </trans-unit>
+            <trans-unit id="post.comments">
+                <source>post.comments</source>
+                <target>Ilość komentarzy</target>
+            </trans-unit>
+            <trans-unit id="post.author">
+                <source>post.author</source>
+                <target>Autor</target>
+            </trans-unit>
+            <trans-unit id="posts.empty">
+                <source>posts.empty</source>
+                <target>Brak postów</target>
+            </trans-unit>
+            <trans-unit id="categories.empty">
+                <source>categories.empty</source>
+                <target>Brak działów</target>
+            </trans-unit>
+            <trans-unit id="logo">
+                <source>logo</source>
+                <target>Logo</target>
+            </trans-unit>
+            <trans-unit id="my.profile">
+                <source>my.profile</source>
+                <target>Edycja danych</target>
+            </trans-unit>
+            <trans-unit id="logout">
+                <source>logout</source>
+                <target>Wyloguj</target>
+            </trans-unit>
+            <trans-unit id="register">
+                <source>register</source>
+                <target>Rejestracja</target>
+            </trans-unit>
+            <trans-unit id="login">
+                <source>login</source>
+                <target>Logowanie</target>
+            </trans-unit>
+            <trans-unit id="categories.all">
+                <source>categories.all</source>
+                <target>Wszystkie działy</target>
+            </trans-unit>
+            <trans-unit id="categories.add">
+                <source>categories.add</source>
+                <target>Dodaj dział</target>
+            </trans-unit>
+            <trans-unit id="categories.edit.title">
+                <source>categories.edit.title</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="categories.edit.h1">
+                <source>categories.edit.h1</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="categories.delete.title">
+                <source>categories.delete.title</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="categories.delete.h1">
+                <source>categories.delete.h1</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="action.delete">
+                <source>action.delete</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="categories.title">
+                <source>categories.title</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="categories.h1">
+                <source>categories.h1</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="categories.to.view">
+                <source>categories.to.view</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="categories.to.edit">
+                <source>categories.to.edit</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="categories.to.delete">
+                <source>categories.to.delete</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="categories.add.title">
+                <source>categories.add.title</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="categories.add.h1">
+                <source>categories.add.h1</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="edit.post">
+                <source>edit.post</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="delete.post">
+                <source>delete.post</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="posts.edit.title">
+                <source>posts.edit.title</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="posts.edit.h1">
+                <source>posts.edit.h1</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="posts.delete.title">
+                <source>posts.delete.title</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="posts.delete.h1">
+                <source>posts.delete.h1</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="posts.add.title">
+                <source>posts.add.title</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="posts.add.h1">
+                <source>posts.add.h1</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="add.comment">
+                <source>add.comment</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="edit.comment">
+                <source>edit.comment</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="delete.comment">
+                <source>delete.comment</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="comments.empty">
+                <source>comments.empty</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="edit.user">
+                <source>edit.user</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="add.user">
+                <source>add.user</source>
+                <target>Actions</target>
+            </trans-unit>
+            <trans-unit id="label.password">
+                <source>label.password</source>
+                <target>Hasło</target>
+            </trans-unit>
+            <trans-unit id="label.email">
+                <source>label.email</source>
+                <target>Email</target>
+            </trans-unit>
+            <trans-unit id="log.in">
+                <source>log.in</source>
+                <target>Zaloguj</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

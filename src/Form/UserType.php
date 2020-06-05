@@ -30,6 +30,8 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $user = $builder->getData();
+
         $builder->add(
             'name',
             TextType::class,
@@ -37,7 +39,10 @@ class UserType extends AbstractType
                 'label' => 'label.name',
                 'required' => true,
                 'mapped' => false,
-                'attr' => ['max_length' => 255],
+                'attr' => [
+                    'max_length' => 255,
+                    'value' => $user->getId() ? $user->getDetails()->getName() : '',
+                ],
             ]
         );
         $builder->add(
@@ -47,7 +52,10 @@ class UserType extends AbstractType
                 'label' => 'label.surname',
                 'required' => true,
                 'mapped' => false,
-                'attr' => ['max_length' => 255],
+                'attr' => [
+                    'max_length' => 255,
+                    'value' => $user->getId() ? $user->getDetails()->getSurname() : '',
+                ],
             ]
         );
         $builder->add(
