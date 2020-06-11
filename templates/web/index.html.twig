@@ -16,9 +16,11 @@
             </div>
             <hr>
             <div>
-                <a href="{{ url('post_create', {'id': category.id}) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> {{ 'add.post'|trans }}
-                </a>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <a href="{{ url('post_create', {'id': category.id}) }}" class="btn btn-default">
+                        <span class="glyphicon glyphicon-plus"></span> {{ 'add.post'|trans }}
+                    </a>
+                {% endif %}
                 <a href="{{ url('category_show', {'id': category.id}) }}" class="btn btn-default">
                     <span class="glyphicon glyphicon-zoom-in"></span> {{ 'view.category'|trans }}
                 </a>

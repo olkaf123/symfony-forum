@@ -36,7 +36,7 @@ class UserType extends AbstractType
             'name',
             TextType::class,
             [
-                'label' => 'label.name',
+                'label' => 'label.firstname',
                 'required' => true,
                 'mapped' => false,
                 'attr' => [

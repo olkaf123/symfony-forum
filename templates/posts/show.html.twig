@@ -17,13 +17,15 @@
 {% block body %}
     <div class="category" style="margin-top:35px;">
         {{ post.topic }}
-        <a href="{{ url('post_delete', {'id': post.id}) }}" class="btn btn-default" style="float: right;">
-            <span class="glyphicon glyphicon-trash"></span> {{ 'delete.post'|trans }}
-        </a>
-        <a href="{{ url('post_edit', {'id': post.id}) }}" class="btn btn-default"
-           style="float: right; margin-right: 10px;">
-            <span class="glyphicon glyphicon-plus"></span> {{ 'edit.post'|trans }}
-        </a>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and (is_granted('ROLE_MOD') or post.user.id == app.user.id) %}
+            <a href="{{ url('post_delete', {'id': post.id}) }}" class="btn btn-default" style="float: right;">
+                <span class="glyphicon glyphicon-trash"></span> {{ 'delete.post'|trans }}
+            </a>
+            <a href="{{ url('post_edit', {'id': post.id}) }}" class="btn btn-default"
+               style="float: right; margin-right: 10px;">
+                <span class="glyphicon glyphicon-plus"></span> {{ 'edit.post'|trans }}
+            </a>
+        {% endif %}
     </div>
     <div class="wrap">
         <div class="na bold">
@@ -63,9 +65,11 @@
     </div>
     <div style="margin-top: 80px;background:#a3a3a3;padding: 10px;">
         {{ 'post.comments'|trans }}
-        <a href="{{ url('comment_create', {'id': post.id}) }}" class="btn btn-default" style="float: right;margin-top: -7px;">
-            <span class="glyphicon glyphicon-plus"></span> {{ 'add.comment'|trans }}
-        </a>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <a href="{{ url('comment_create', {'id': post.id}) }}" class="btn btn-default" style="float: right;margin-top: -7px;">
+                <span class="glyphicon glyphicon-plus"></span> {{ 'add.comment'|trans }}
+            </a>
+        {% endif %}
     </div>
     <div style="padding: 0 20px 20px;">
         {% if comments|length > 0 %}
@@ -75,8 +79,10 @@
                         <a href="mailto:{{ comment.user.email }}" class="bold">
                             {{ comment.user.details.name }} {{ comment.user.details.surname }}
                         </a>
-                        (<a href="{{ url('comment_edit', {id: comment.id}) }}">{{ 'edit.comment'|trans }}</a> /
-                        <a href="{{ url('comment_delete', {id: comment.id}) }}">{{ 'delete.comment'|trans }}</a>)
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and (is_granted('ROLE_MOD') or comment.user.id == app.user.id) %}
+                            (<a href="{{ url('comment_edit', {id: comment.id}) }}">{{ 'edit.comment'|trans }}</a> /
+                            <a href="{{ url('comment_delete', {id: comment.id}) }}">{{ 'delete.comment'|trans }}</a>)
+                        {% endif %}
                     </div>
                     <div style="position:absolute;right:40px;">
                         {% if commentMarkRepository.alreadyVoted(comment, app.user) == false %}

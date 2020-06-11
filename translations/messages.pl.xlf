@@ -4,31 +4,31 @@
         <body>
             <trans-unit id="comments.edit.title">
                 <source>comments.edit.title</source>
-                <target>Actions</target>
+                <target>Edycja komentarza</target>
             </trans-unit>
             <trans-unit id="comments.edit.h1">
                 <source>comments.edit.h1</source>
-                <target>Actions</target>
+                <target>Edycja komentarza</target>
             </trans-unit>
             <trans-unit id="action.save">
                 <source>action.save</source>
-                <target>Zaloguj</target>
+                <target>Zapisz</target>
             </trans-unit>
             <trans-unit id="comments.delete.title">
                 <source>comments.delete.title</source>
-                <target>Actions</target>
+                <target>Usuń komentarz</target>
             </trans-unit>
             <trans-unit id="comments.delete.h1">
                 <source>comments.delete.h1</source>
-                <target>Actions</target>
+                <target>Usuń komentarz</target>
             </trans-unit>
             <trans-unit id="comments.add.title">
                 <source>comments.add.title</source>
-                <target>Actions</target>
+                <target>Dodaj komentarz</target>
             </trans-unit>
             <trans-unit id="comments.add.h1">
                 <source>comments.add.h1</source>
-                <target>Actions</target>
+                <target>Dodaj komentarz</target>
             </trans-unit>
             <trans-unit id="main_title">
                 <source>main_title</source>
@@ -104,107 +104,107 @@
             </trans-unit>
             <trans-unit id="categories.edit.title">
                 <source>categories.edit.title</source>
-                <target>Actions</target>
+                <target>Edycja działu</target>
             </trans-unit>
             <trans-unit id="categories.edit.h1">
                 <source>categories.edit.h1</source>
-                <target>Actions</target>
+                <target>Usuń dział</target>
             </trans-unit>
             <trans-unit id="categories.delete.title">
                 <source>categories.delete.title</source>
-                <target>Actions</target>
+                <target>Usuń dział</target>
             </trans-unit>
             <trans-unit id="categories.delete.h1">
                 <source>categories.delete.h1</source>
-                <target>Actions</target>
+                <target>Usuń dział</target>
             </trans-unit>
             <trans-unit id="action.delete">
                 <source>action.delete</source>
-                <target>Actions</target>
+                <target>usuń</target>
             </trans-unit>
             <trans-unit id="categories.title">
                 <source>categories.title</source>
-                <target>Actions</target>
+                <target>cat title</target>
             </trans-unit>
             <trans-unit id="categories.h1">
                 <source>categories.h1</source>
-                <target>Actions</target>
+                <target>Wszystkie działy</target>
             </trans-unit>
             <trans-unit id="categories.to.view">
                 <source>categories.to.view</source>
-                <target>Actions</target>
+                <target>podgląd postów</target>
             </trans-unit>
             <trans-unit id="categories.to.edit">
                 <source>categories.to.edit</source>
-                <target>Actions</target>
+                <target>edytuj</target>
             </trans-unit>
             <trans-unit id="categories.to.delete">
                 <source>categories.to.delete</source>
-                <target>Actions</target>
+                <target>usuń</target>
             </trans-unit>
             <trans-unit id="categories.add.title">
                 <source>categories.add.title</source>
-                <target>Actions</target>
+                <target>usuń</target>
             </trans-unit>
             <trans-unit id="categories.add.h1">
                 <source>categories.add.h1</source>
-                <target>Actions</target>
+                <target>Dodaj dział</target>
             </trans-unit>
             <trans-unit id="edit.post">
                 <source>edit.post</source>
-                <target>Actions</target>
+                <target>edytuj</target>
             </trans-unit>
             <trans-unit id="delete.post">
                 <source>delete.post</source>
-                <target>Actions</target>
+                <target>usuń</target>
             </trans-unit>
             <trans-unit id="posts.edit.title">
                 <source>posts.edit.title</source>
-                <target>Actions</target>
+                <target>Edycja posta</target>
             </trans-unit>
             <trans-unit id="posts.edit.h1">
                 <source>posts.edit.h1</source>
-                <target>Actions</target>
+                <target>Edycja posta</target>
             </trans-unit>
             <trans-unit id="posts.delete.title">
                 <source>posts.delete.title</source>
-                <target>Actions</target>
+                <target>Usuń post</target>
             </trans-unit>
             <trans-unit id="posts.delete.h1">
                 <source>posts.delete.h1</source>
-                <target>Actions</target>
+                <target>Usuń post</target>
             </trans-unit>
             <trans-unit id="posts.add.title">
                 <source>posts.add.title</source>
-                <target>Actions</target>
+                <target>Dodaj post</target>
             </trans-unit>
             <trans-unit id="posts.add.h1">
                 <source>posts.add.h1</source>
-                <target>Actions</target>
+                <target>Dodaj post</target>
             </trans-unit>
             <trans-unit id="add.comment">
                 <source>add.comment</source>
-                <target>Actions</target>
+                <target>dodaj komenatarz</target>
             </trans-unit>
             <trans-unit id="edit.comment">
                 <source>edit.comment</source>
-                <target>Actions</target>
+                <target>edytuj</target>
             </trans-unit>
             <trans-unit id="delete.comment">
                 <source>delete.comment</source>
-                <target>Actions</target>
+                <target>usuń</target>
             </trans-unit>
             <trans-unit id="comments.empty">
                 <source>comments.empty</source>
-                <target>Actions</target>
+                <target>Brak komenatrzy</target>
             </trans-unit>
             <trans-unit id="edit.user">
                 <source>edit.user</source>
-                <target>Actions</target>
+                <target>edytuj</target>
             </trans-unit>
             <trans-unit id="add.user">
                 <source>add.user</source>
-                <target>Actions</target>
+                <target>dodaj użytkownika</target>
             </trans-unit>
             <trans-unit id="label.password">
                 <source>label.password</source>
@@ -217,6 +217,46 @@
             <trans-unit id="log.in">
                 <source>log.in</source>
                 <target>Zaloguj</target>
+            </trans-unit>
+            <trans-unit id="label.name">
+                <source>label.name</source>
+                <target>Nazwa</target>
+            </trans-unit>
+            <trans-unit id="label.firstname">
+                <source>label.firstname</source>
+                <target>Imię</target>
+            </trans-unit>
+            <trans-unit id="label.surname">
+                <source>label.surname</source>
+                <target>Nazwisko</target>
+            </trans-unit>
+            <trans-unit id="label.topic">
+                <source>label.topic</source>
+                <target>Temat</target>
+            </trans-unit>
+            <trans-unit id="label.post">
+                <source>label.post</source>
+                <target>Post</target>
+            </trans-unit>
+            <trans-unit id="label.comment">
+                <source>label.comment</source>
+                <target>Komentarz</target>
+            </trans-unit>
+            <trans-unit id="message.created.successfully">
+                <source>message.created.successfully</source>
+                <target>Operacja wykonana pomyślnie</target>
+            </trans-unit>
+            <trans-unit id="message.added.successfully">
+                <source>message.added.successfully</source>
+                <target>Operacja wykonana pomyślnie</target>
+            </trans-unit>
+            <trans-unit id="message.updated.successfully">
+                <source>message.updated.successfully</source>
+                <target>Operacja wykonana pomyślnie</target>
+            </trans-unit>
+            <trans-unit id="message.deleted.successfully">
+                <source>message.deleted.successfully</source>
+                <target>Operacja wykonana pomyślnie</target>
             </trans-unit>
         </body>
     </file>
