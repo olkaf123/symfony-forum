@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Details;
 use App\Entity\User;
+use App\Form\UserPasswordType;
 use App\Form\UserType;
 use App\Repository\DetailsRepository;
 use App\Repository\UserRepository;
@@ -21,9 +22,9 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-         if ($this->getUser()) {
-             return $this->redirectToRoute('main_index');
-         }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('main_index');
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -44,10 +45,10 @@ class SecurityController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request                      $request           HTTP request
-     * @param UserRepository               $userRepository    User repository
-     * @param DetailsRepository            $detailsRepository Details repository
-     * @param UserPasswordEncoderInterface $encoder           Password encoder
+     * @param Request $request HTTP request
+     * @param UserRepository $userRepository User repository
+     * @param DetailsRepository $detailsRepository Details repository
+     * @param UserPasswordEncoderInterface $encoder Password encoder
      *
      * @return Response HTTP response
      *
@@ -91,10 +92,8 @@ class SecurityController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request                      $request           HTTP request
-     * @param UserRepository               $userRepository    User repository
-     * @param DetailsRepository            $detailsRepository Details repository
-     * @param UserPasswordEncoderInterface $encoder           Password encoder
+     * @param Request $request HTTP request
+     * @param DetailsRepository $detailsRepository Details repository
      *
      * @return Response HTTP response
      *
@@ -107,15 +106,13 @@ class SecurityController extends AbstractController
      *     name="app_edit",
      * )
      */
-    public function edit(Request $request, UserRepository $userRepository, DetailsRepository $detailsRepository, UserPasswordEncoderInterface $encoder): Response
+    public function edit(Request $request, DetailsRepository $detailsRepository): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
-            $userRepository->save($user);
             $details = $user->getDetails();
             $details->setName($form['name']->getData());
             $details->setSurname($form['surname']->getData());
@@ -127,6 +124,46 @@ class SecurityController extends AbstractController
 
         return $this->render(
             'security/edit.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
+    }
+
+    /**
+     * Create action.
+     *
+     * @param Request $request HTTP request
+     * @param UserRepository $userRepository User repository
+     * @param UserPasswordEncoderInterface $encoder Password encoder
+     *
+     * @return Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/password",
+     *     methods={"GET", "POST"},
+     *     name="app_password",
+     * )
+     */
+    public function password(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $encoder): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserPasswordType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
+            $userRepository->save($user);
+            $this->addFlash('success', 'message.updated.successfully');
+
+            return $this->redirectToRoute('app_password');
+        }
+
+        return $this->render(
+            'security/password.html.twig',
             [
                 'form' => $form->createView(),
             ]

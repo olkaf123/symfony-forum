@@ -123,6 +123,7 @@
                     <ul class="nav navbar-nav">
                         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                             <li><a href="{{ url('app_edit') }}">{{ 'my.profile'|trans }}</a></li>
+                            <li><a href="{{ url('app_password') }}">{{ 'change.password'|trans }}</a></li>
                         {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
