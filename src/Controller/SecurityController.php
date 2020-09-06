@@ -1,4 +1,7 @@
 <?php
+/**
+ * Security controller.
+ */
 
 namespace App\Controller;
 
@@ -14,10 +17,19 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+/**
+ * Class CategoryController.
+ */
 class SecurityController extends AbstractController
 {
     /**
+     * Login
+     *
      * @Route("/login", name="app_login")
+     *
+     * @param AuthenticationUtils $authenticationUtils
+     *
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -44,10 +56,10 @@ class SecurityController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request $request HTTP request
-     * @param UserRepository $userRepository User repository
-     * @param DetailsRepository $detailsRepository Details repository
-     * @param UserPasswordEncoderInterface $encoder Password encoder
+     * @param Request                      $request           HTTP request
+     * @param UserRepository               $userRepository    User repository
+     * @param DetailsRepository            $detailsRepository Details repository
+     * @param UserPasswordEncoderInterface $encoder           Password encoder
      *
      * @return Response HTTP response
      *
@@ -91,7 +103,7 @@ class SecurityController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request $request HTTP request
+     * @param Request           $request           HTTP request
      * @param DetailsRepository $detailsRepository Details repository
      *
      * @return Response HTTP response
@@ -133,9 +145,9 @@ class SecurityController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request $request HTTP request
-     * @param UserRepository $userRepository User repository
-     * @param UserPasswordEncoderInterface $encoder Password encoder
+     * @param Request                      $request        HTTP request
+     * @param UserRepository               $userRepository User repository
+     * @param UserPasswordEncoderInterface $encoder        Password encoder
      *
      * @return Response HTTP response
      *

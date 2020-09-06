@@ -87,6 +87,7 @@ class Details
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function setName(string $name): self
@@ -106,6 +107,7 @@ class Details
 
     /**
      * @param string $surname
+     *
      * @return $this
      */
     public function setSurname(string $surname): self
@@ -125,6 +127,7 @@ class Details
 
     /**
      * @param User $user
+     *
      * @return $this
      */
     public function setUser(User $user): self

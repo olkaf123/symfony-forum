@@ -61,6 +61,9 @@ class Comment
      */
     private $commentMarks;
 
+    /**
+     * Comment constructor.
+     */
     public function __construct()
     {
         $this->commentMarks = new ArrayCollection();
@@ -84,6 +87,7 @@ class Comment
 
     /**
      * @param string $comment
+     *
      * @return $this
      */
     public function setComment(string $comment): self
@@ -103,6 +107,7 @@ class Comment
 
     /**
      * @param Post|null $post
+     *
      * @return $this
      */
     public function setPost(?Post $post): self
@@ -122,6 +127,7 @@ class Comment
 
     /**
      * @param User|null $user
+     *
      * @return $this
      */
     public function setUser(?User $user): self
@@ -139,6 +145,11 @@ class Comment
         return $this->commentMarks;
     }
 
+    /**
+     * @param CommentMark $commentMark
+     *
+     * @return $this
+     */
     public function addCommentMark(CommentMark $commentMark): self
     {
         if (!$this->commentMarks->contains($commentMark)) {
@@ -149,6 +160,11 @@ class Comment
         return $this;
     }
 
+    /**
+     * @param CommentMark $commentMark
+     *
+     * @return $this
+     */
     public function removeCommentMark(CommentMark $commentMark): self
     {
         if ($this->commentMarks->contains($commentMark)) {

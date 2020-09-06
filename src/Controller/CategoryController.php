@@ -112,9 +112,9 @@ class CategoryController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Entity\Category                          $category           Category entity
-     * @param \App\Repository\CategoryRepository            $categoryRepository Category repository
+     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
+     * @param \App\Entity\Category                      $category           Category entity
+     * @param \App\Repository\CategoryRepository        $categoryRepository Category repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -152,9 +152,9 @@ class CategoryController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Request $request        HTTP request
-     * @param Category                          $category           Category entity
-     * @param CategoryRepository            $categoryRepository Category repository
+     * @param Request            $request            HTTP request
+     * @param Category           $category           Category entity
+     * @param CategoryRepository $categoryRepository Category repository
      *
      * @return Response HTTP response
      *

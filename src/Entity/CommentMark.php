@@ -76,6 +76,7 @@ class CommentMark
 
     /**
      * @param int $mark
+     *
      * @return $this
      */
     public function setMark(int $mark): self
@@ -85,11 +86,19 @@ class CommentMark
         return $this;
     }
 
+    /**
+     * @return Comment|null
+     */
     public function getComment(): ?Comment
     {
         return $this->comment;
     }
 
+    /**
+     * @param Comment|null $comment
+     *
+     * @return $this
+     */
     public function setComment(?Comment $comment): self
     {
         $this->comment = $comment;
@@ -97,11 +106,19 @@ class CommentMark
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     *
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;

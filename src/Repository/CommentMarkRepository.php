@@ -1,4 +1,7 @@
 <?php
+/**
+ * Comment mark repository
+ */
 
 namespace App\Repository;
 
@@ -43,6 +46,7 @@ class CommentMarkRepository extends ServiceEntityRepository
 
     /**
      * @param Comment $comment
+     *
      * @return int|mixed|string
      *
      * @throws \Doctrine\ORM\NoResultException
@@ -55,15 +59,15 @@ class CommentMarkRepository extends ServiceEntityRepository
             ->andWhere('mark.comment = :val')
             ->setParameter('val', $comment)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         return $result ? $result : 0;
     }
 
     /**
-     * @param Comment $comment Comment
-     * @param User    $user    User
+     * @param Comment   $comment Comment
+     * @param User|null $user    User
+     *
      * @return boolean true|false
      *
      * @throws \Doctrine\ORM\NoResultException
@@ -82,16 +86,16 @@ class CommentMarkRepository extends ServiceEntityRepository
             ->setParameter('comment', $comment)
             ->setParameter('user', $user)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
-        return (bool)$result;
+        return (bool) $result;
     }
 
     /**
      * Get or create new query builder.
      *
      * @param QueryBuilder|null $queryBuilder Query builder
+     *
      * @return QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Comment repository
+ */
 
 namespace App\Repository;
 
@@ -27,6 +30,10 @@ class CommentRepository extends ServiceEntityRepository
      */
     const PAGINATOR_ITEMS_PER_PAGE = 10;
 
+    /**
+     * CommentRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);

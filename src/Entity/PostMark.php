@@ -74,6 +74,7 @@ class PostMark
 
     /**
      * @param int $mark
+     *
      * @return $this
      */
     public function setMark(int $mark): self
@@ -83,11 +84,19 @@ class PostMark
         return $this;
     }
 
+    /**
+     * @return Post|null
+     */
     public function getPost(): ?Post
     {
         return $this->post;
     }
 
+    /**
+     * @param Post|null $post
+     *
+     * @return $this
+     */
     public function setPost(?Post $post): self
     {
         $this->post = $post;
@@ -95,11 +104,19 @@ class PostMark
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     *
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;

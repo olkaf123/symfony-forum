@@ -81,6 +81,7 @@ class Category
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function setName(string $name): self
@@ -100,6 +101,7 @@ class Category
 
     /**
      * @param Post $post
+     *
      * @return $this
      */
     public function addPost(Post $post): self
@@ -114,6 +116,7 @@ class Category
 
     /**
      * @param Post $post
+     *
      * @return $this
      */
     public function removePost(Post $post): self

@@ -112,6 +112,7 @@ class Post
 
     /**
      * @param string $topic
+     *
      * @return $this
      */
     public function setTopic(string $topic): self
@@ -131,6 +132,7 @@ class Post
 
     /**
      * @param string $post
+     *
      * @return $this
      */
     public function setPost(string $post): self
@@ -150,6 +152,7 @@ class Post
 
     /**
      * @param User|null $user
+     *
      * @return $this
      */
     public function setUser(?User $user): self
@@ -169,6 +172,7 @@ class Post
 
     /**
      * @param Category|null $category
+     *
      * @return $this
      */
     public function setCategory(?Category $category): self
@@ -188,6 +192,7 @@ class Post
 
     /**
      * @param Comment $comment
+     *
      * @return $this
      */
     public function addComment(Comment $comment): self
@@ -202,6 +207,7 @@ class Post
 
     /**
      * @param Comment $comment
+     *
      * @return $this
      */
     public function removeComment(Comment $comment): self
@@ -225,6 +231,11 @@ class Post
         return $this->postMarks;
     }
 
+    /**
+     * @param PostMark $postMark
+     *
+     * @return $this
+     */
     public function addPostMark(PostMark $postMark): self
     {
         if (!$this->postMarks->contains($postMark)) {
@@ -235,6 +246,11 @@ class Post
         return $this;
     }
 
+    /**
+     * @param PostMark $postMark
+     *
+     * @return $this
+     */
     public function removePostMark(PostMark $postMark): self
     {
         if ($this->postMarks->contains($postMark)) {

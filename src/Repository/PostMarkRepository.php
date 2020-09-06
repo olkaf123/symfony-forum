@@ -1,4 +1,7 @@
 <?php
+/**
+ * Post mark repository
+ */
 
 namespace App\Repository;
 
@@ -17,6 +20,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PostMarkRepository extends ServiceEntityRepository
 {
+    /**
+     * PostMarkRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, PostMark::class);
@@ -38,6 +45,7 @@ class PostMarkRepository extends ServiceEntityRepository
 
     /**
      * @param Post $post
+     *
      * @return int|mixed|string
      *
      * @throws \Doctrine\ORM\NoResultException
@@ -50,8 +58,7 @@ class PostMarkRepository extends ServiceEntityRepository
             ->andWhere('mark.post = :val')
             ->setParameter('val', $post)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         return $result ? $result : 0;
     }
@@ -59,6 +66,7 @@ class PostMarkRepository extends ServiceEntityRepository
     /**
      * @param Post $post Post
      * @param User $user User
+     *
      * @return boolean true|false
      *
      * @throws \Doctrine\ORM\NoResultException
@@ -77,16 +85,16 @@ class PostMarkRepository extends ServiceEntityRepository
             ->setParameter('post', $post)
             ->setParameter('user', $user)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
-        return (bool)$result;
+        return (bool) $result;
     }
 
     /**
      * Get or create new query builder.
      *
      * @param QueryBuilder|null $queryBuilder Query builder
+     *
      * @return QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder

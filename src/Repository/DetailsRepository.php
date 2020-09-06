@@ -1,4 +1,7 @@
 <?php
+/**
+ * Details repository
+ */
 
 namespace App\Repository;
 
@@ -14,6 +17,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class DetailsRepository extends ServiceEntityRepository
 {
+    /**
+     * DetailsRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Details::class);

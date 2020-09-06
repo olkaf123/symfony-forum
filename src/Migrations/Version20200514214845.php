@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Migration
+ */
 declare(strict_types=1);
 
 namespace DoctrineMigrations;
@@ -12,11 +14,19 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20200514214845 extends AbstractMigration
 {
+    /**
+     * @return string
+     */
     public function getDescription() : string
     {
         return '';
     }
 
+    /**
+     * @param Schema $schema
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -40,6 +50,11 @@ final class Version20200514214845 extends AbstractMigration
         $this->addSql('ALTER TABLE posts_marks ADD CONSTRAINT FK_8E6DA142A76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
     }
 
+    /**
+     * @param Schema $schema
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

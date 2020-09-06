@@ -246,6 +246,7 @@ class User implements UserInterface
 
     /**
      * @param Details $details
+     *
      * @return $this
      */
     public function setDetails(Details $details): self
@@ -270,6 +271,7 @@ class User implements UserInterface
 
     /**
      * @param Post $post
+     *
      * @return $this
      */
     public function addPost(Post $post): self
@@ -284,6 +286,7 @@ class User implements UserInterface
 
     /**
      * @param Post $post
+     *
      * @return $this
      */
     public function removePost(Post $post): self
@@ -309,6 +312,7 @@ class User implements UserInterface
 
     /**
      * @param Comment $comment
+     *
      * @return $this
      */
     public function addComment(Comment $comment): self
@@ -323,6 +327,7 @@ class User implements UserInterface
 
     /**
      * @param Comment $comment
+     *
      * @return $this
      */
     public function removeComment(Comment $comment): self
@@ -346,6 +351,11 @@ class User implements UserInterface
         return $this->commentMarks;
     }
 
+    /**
+     * @param CommentMark $commentMark
+     *
+     * @return $this
+     */
     public function addCommentMark(CommentMark $commentMark): self
     {
         if (!$this->commentMarks->contains($commentMark)) {
@@ -356,6 +366,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param CommentMark $commentMark
+     *
+     * @return $this
+     */
     public function removeCommentMark(CommentMark $commentMark): self
     {
         if ($this->commentMarks->contains($commentMark)) {
@@ -377,6 +392,11 @@ class User implements UserInterface
         return $this->postMarks;
     }
 
+    /**
+     * @param PostMark $postMark
+     *
+     * @return $this
+     */
     public function addPostMark(PostMark $postMark): self
     {
         if (!$this->postMarks->contains($postMark)) {
@@ -387,6 +407,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param PostMark $postMark
+     *
+     * @return $this
+     */
     public function removePostMark(PostMark $postMark): self
     {
         if ($this->postMarks->contains($postMark)) {
