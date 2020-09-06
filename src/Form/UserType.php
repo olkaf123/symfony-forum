@@ -67,6 +67,15 @@ class UserType extends AbstractType
                 'attr' => ['max_length' => 255],
             ]
         );
+        $builder->add(
+          'password',
+          PasswordType::class,
+          [
+            'label' => 'label.password',
+            'required' => true,
+            'attr' => ['max_length' => 255],
+          ]
+        );
     }
 
     /**

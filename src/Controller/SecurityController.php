@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Details;
 use App\Entity\User;
-use App\Form\UserPasswordType;
 use App\Form\UserType;
 use App\Repository\DetailsRepository;
 use App\Repository\UserRepository;
@@ -110,6 +109,7 @@ class SecurityController extends AbstractController
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
+        $form->remove('password');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -151,7 +151,11 @@ class SecurityController extends AbstractController
     public function password(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $encoder): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(UserPasswordType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
+        $form->remove('name');
+        $form->remove('surname');
+        $form->remove('email');
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
