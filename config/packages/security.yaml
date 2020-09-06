@@ -41,6 +41,7 @@ security:
     access_control:
          - { path: ^/categories.*, roles: ROLE_MOD }
          - { path: ^/posts/\d+.+, roles: ROLE_USER }
+         - { path: ^/categories/\d+.+, roles: ROLE_USER }
          - { path: ^/edit, roles: ROLE_USER }
          - { path: ^/comments.*, roles: ROLE_USER }
          - { path: ^/logout$, roles: IS_AUTHENTICATED_REMEMBERED }

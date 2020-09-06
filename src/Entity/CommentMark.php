@@ -47,13 +47,13 @@ class CommentMark
     private $mark;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Comment", inversedBy="commentMarks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Comment", inversedBy="commentMarks", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      */
     private $comment;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="commentMarks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="commentMarks", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

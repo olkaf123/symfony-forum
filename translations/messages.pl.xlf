@@ -258,6 +258,10 @@
                 <source>message.deleted.successfully</source>
                 <target>Operacja wykonana pomyślnie</target>
             </trans-unit>
+            <trans-unit id="change.password">
+                <source>change.password</source>
+                <target>Zmień hasło</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

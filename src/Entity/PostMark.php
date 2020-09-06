@@ -45,13 +45,13 @@ class PostMark
     private $mark;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="postMarks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="postMarks", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      */
     private $post;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="postMarks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="postMarks", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

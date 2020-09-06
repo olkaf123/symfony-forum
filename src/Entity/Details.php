@@ -64,7 +64,7 @@ class Details
     private $surname;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="details", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="details", cascade={"persist", "remove"}, fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
