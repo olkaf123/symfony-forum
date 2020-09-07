@@ -23,8 +23,12 @@
                         <span class="glyphicon glyphicon-list-alt" style="font-size: 20px;"></span>
                         {{ post.topic }}<br>
                     </a>
-                    (<a href="{{ url('post_edit', {id: post.id}) }}">{{ 'edit.post'|trans }}</a> /
-                    <a href="{{ url('post_delete', {id: post.id}) }}">{{ 'delete.post'|trans }}</a>)
+                    {% if is_granted('DELETE', post) %}
+                        (<a href="{{ url('post_edit', {id: post.id}) }}">{{ 'edit.post'|trans }}</a> /
+                    {% endif %}
+                    {% if is_granted('DELETE', post) %}
+                        <a href="{{ url('post_delete', {id: post.id}) }}">{{ 'delete.post'|trans }}</a>)
+                    {% endif %}
                 </div>
                 <div class="co text-center">{{ post.comments|length }}</div>
                 <div class="au text-center">

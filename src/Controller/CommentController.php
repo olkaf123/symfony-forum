@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Class CommentController.
@@ -110,6 +111,11 @@ class CommentController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="comment_edit",
      * )
+     *
+     * @IsGranted(
+     *     "EDIT",
+     *     subject="comment",
+     * )
      */
     public function edit(Request $request, Comment $comment): Response
     {
@@ -148,6 +154,11 @@ class CommentController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="comment_delete",
+     * )
+     *
+     * @IsGranted(
+     *     "DELETE",
+     *     subject="comment",
      * )
      */
     public function delete(Request $request, Comment $comment): Response

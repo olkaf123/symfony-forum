@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Class PostController.
@@ -161,6 +162,11 @@ class PostController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="post_edit",
      * )
+     *
+     * @IsGranted(
+     *     "EDIT",
+     *     subject="post",
+     * )
      */
     public function edit(Request $request, Post $post): Response
     {
@@ -199,6 +205,11 @@ class PostController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="post_delete",
+     * )
+     *
+     * @IsGranted(
+     *     "DELETE",
+     *     subject="post",
      * )
      */
     public function delete(Request $request, Post $post): Response

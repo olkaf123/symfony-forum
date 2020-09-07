@@ -17,13 +17,15 @@
 {% block body %}
     <div class="category" style="margin-top:35px;">
         {{ post.topic }}
-        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and (is_granted('ROLE_MOD') or post.user.id == app.user.id) %}
+        {% if is_granted('DELETE', post) %}
             <a href="{{ url('post_delete', {'id': post.id}) }}" class="btn btn-default" style="float: right;">
                 <span class="glyphicon glyphicon-trash"></span> {{ 'delete.post'|trans }}
             </a>
+        {% endif %}
+        {% if is_granted('EDIT', post) %}
             <a href="{{ url('post_edit', {'id': post.id}) }}" class="btn btn-default"
                style="float: right; margin-right: 10px;">
-                <span class="glyphicon glyphicon-plus"></span> {{ 'edit.post'|trans }}
+                <span class="glyphicon glyphicon-pencil"></span> {{ 'edit.post'|trans }}
             </a>
         {% endif %}
     </div>
@@ -79,8 +81,10 @@
                         <a href="mailto:{{ comment.user.email }}" class="bold">
                             {{ comment.user.details.name }} {{ comment.user.details.surname }}
                         </a>
-                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and (is_granted('ROLE_MOD') or comment.user.id == app.user.id) %}
+                        {% if is_granted('EDIT', comment) %}
                             (<a href="{{ url('comment_edit', {id: comment.id}) }}">{{ 'edit.comment'|trans }}</a> /
+                        {% endif %}
+                        {% if is_granted('DELETE', comment) %}
                             <a href="{{ url('comment_delete', {id: comment.id}) }}">{{ 'delete.comment'|trans }}</a>)
                         {% endif %}
                     </div>
