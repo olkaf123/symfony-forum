@@ -8,8 +8,8 @@ namespace App\Controller;
 use App\Entity\Details;
 use App\Entity\User;
 use App\Form\UserType;
-use App\Repository\DetailsRepository;
-use App\Repository\UserRepository;
+use App\Service\DetailsService;
+use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +22,32 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  */
 class SecurityController extends AbstractController
 {
+    /**
+     * User service.
+     *
+     * @var \App\Service\UserService
+     */
+    private $userService;
+
+    /**
+     * Details service.
+     *
+     * @var \App\Service\DetailsService
+     */
+    private $detailsService;
+
+    /**
+     * SecurityController constructor.
+     *
+     * @param \App\Service\UserService    $userService    User service
+     * @param \App\Service\DetailsService $detailsService Details service
+     */
+    public function __construct(UserService $userService, DetailsService $detailsService)
+    {
+        $this->detailsService = $detailsService;
+        $this->userService = $userService;
+    }
+
     /**
      * Login
      *
@@ -56,10 +82,8 @@ class SecurityController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request                      $request           HTTP request
-     * @param UserRepository               $userRepository    User repository
-     * @param DetailsRepository            $detailsRepository Details repository
-     * @param UserPasswordEncoderInterface $encoder           Password encoder
+     * @param Request                      $request HTTP request
+     * @param UserPasswordEncoderInterface $encoder Password encoder
      *
      * @return Response HTTP response
      *
@@ -72,7 +96,7 @@ class SecurityController extends AbstractController
      *     name="app_register",
      * )
      */
-    public function create(Request $request, UserRepository $userRepository, DetailsRepository $detailsRepository, UserPasswordEncoderInterface $encoder): Response
+    public function create(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -81,12 +105,12 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
             $user->setRoles([User::ROLE_USER]);
-            $userRepository->save($user);
+            $this->userService->save($user);
             $details = new Details();
             $details->setName($form['name']->getData());
             $details->setSurname($form['surname']->getData());
             $details->setUser($user);
-            $detailsRepository->save($details);
+            $this->detailsService->save($details);
             $this->addFlash('success', 'message.created.successfully');
 
             return $this->redirectToRoute('app_login');
@@ -103,8 +127,7 @@ class SecurityController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request           $request           HTTP request
-     * @param DetailsRepository $detailsRepository Details repository
+     * @param Request $request HTTP request
      *
      * @return Response HTTP response
      *
@@ -117,7 +140,7 @@ class SecurityController extends AbstractController
      *     name="app_edit",
      * )
      */
-    public function edit(Request $request, DetailsRepository $detailsRepository): Response
+    public function edit(Request $request): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
@@ -128,7 +151,7 @@ class SecurityController extends AbstractController
             $details = $user->getDetails();
             $details->setName($form['name']->getData());
             $details->setSurname($form['surname']->getData());
-            $detailsRepository->save($details);
+            $this->detailsService->save($details);
             $this->addFlash('success', 'message.updated.successfully');
 
             return $this->redirectToRoute('app_edit');
@@ -143,11 +166,10 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * Create action.
+     * Password action.
      *
-     * @param Request                      $request        HTTP request
-     * @param UserRepository               $userRepository User repository
-     * @param UserPasswordEncoderInterface $encoder        Password encoder
+     * @param Request                      $request HTTP request
+     * @param UserPasswordEncoderInterface $encoder Password encoder
      *
      * @return Response HTTP response
      *
@@ -160,7 +182,7 @@ class SecurityController extends AbstractController
      *     name="app_password",
      * )
      */
-    public function password(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $encoder): Response
+    public function password(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
@@ -172,7 +194,7 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
-            $userRepository->save($user);
+            $this->userService->save($user);
             $this->addFlash('success', 'message.updated.successfully');
 
             return $this->redirectToRoute('app_password');

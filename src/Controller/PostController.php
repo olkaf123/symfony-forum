@@ -10,10 +10,9 @@ use App\Entity\Post;
 use App\Entity\PostMark;
 use App\Form\PostType;
 use App\Repository\CommentMarkRepository;
-use App\Repository\CommentRepository;
-use App\Repository\PostMarkRepository;
-use App\Repository\PostRepository;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Service\CommentService;
+use App\Service\PostMarkService;
+use App\Service\PostService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,14 +27,46 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     /**
+     * Commnet service.
+     *
+     * @var \App\Service\CommentService
+     */
+    private $commentService;
+
+    /**
+     * Post mark service.
+     *
+     * @var \App\Service\PostmarkService
+     */
+    private $postMarkService;
+
+    /**
+     * Post service.
+     *
+     * @var \App\Service\PostmarkService
+     */
+    private $postService;
+
+    /**
+     * PostController constructor.
+     *
+     * @param \App\Service\CommentService  $commentService  Category service
+     * @param \App\Service\PostMarkService $postMarkService Post mark service
+     * @param \App\Service\PostService     $postService     Post service
+     */
+    public function __construct(CommentService $commentService, PostMarkService $postMarkService, PostService $postService)
+    {
+        $this->commentService = $commentService;
+        $this->postMarkService = $postMarkService;
+        $this->postService = $postService;
+    }
+
+    /**
      * Show action.
      *
      * @param Request               $request               Request
      * @param Post                  $post                  Post entity
-     * @param CommentRepository     $commentRepository     Comment Repository
      * @param CommentMarkRepository $commentMarkRepository Comment Mark Repository
-     * @param PostMarkRepository    $postMarkRepository    Post Mark Repository
-     * @param PaginatorInterface    $paginator             Paginator Interface
      *
      * @return Response HTTP response
      *
@@ -49,16 +80,14 @@ class PostController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(Request $request, Post $post, CommentRepository $commentRepository, CommentMarkRepository $commentMarkRepository, PostMarkRepository $postMarkRepository, PaginatorInterface $paginator): Response
+    public function show(Request $request, Post $post, CommentMarkRepository $commentMarkRepository): Response
     {
-        $comments = $pagination = $paginator->paginate(
-            $commentRepository->queryAllByPost($post),
-            $request->query->getInt('page', 1),
-            CommentRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
-        $mark = $postMarkRepository->countMarkValue($post);
+        $page = $request->query->getInt('page', 1);
+        $comments = $this->commentService->createPaginatedList($page, $post);
+
+        $mark = $this->postMarkService->countMarkValue($post);
         $user = $this->getUser();
-        $alreadyMarked = $postMarkRepository->alreadyVoted($post, $user);
+        $alreadyMarked = $this->postMarkService->alreadyVoted($post, $user);
 
         return $this->render(
             'posts/show.html.twig',
@@ -75,9 +104,8 @@ class PostController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request        $request        HTTP request
-     * @param Category       $category       Category
-     * @param PostRepository $postRepository Post repository
+     * @param Request  $request  HTTP request
+     * @param Category $category Category
      *
      * @return Response HTTP response
      *
@@ -91,7 +119,7 @@ class PostController extends AbstractController
      *     name="post_create",
      * )
      */
-    public function create(Request $request, Category $category, PostRepository $postRepository): Response
+    public function create(Request $request, Category $category): Response
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
@@ -101,7 +129,7 @@ class PostController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $post->setCategory($category);
             $post->setUser($user);
-            $postRepository->save($post);
+            $this->postService->save($post);
             $this->addFlash('success', 'message.created.successfully');
 
             return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
@@ -119,9 +147,8 @@ class PostController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request        $request        HTTP request
-     * @param Post           $post           Post entity
-     * @param PostRepository $postRepository Post repository
+     * @param Request $request HTTP request
+     * @param Post    $post    Post entity
      *
      * @return Response HTTP response
      *
@@ -135,13 +162,13 @@ class PostController extends AbstractController
      *     name="post_edit",
      * )
      */
-    public function edit(Request $request, Post $post, PostRepository $postRepository): Response
+    public function edit(Request $request, Post $post): Response
     {
         $form = $this->createForm(PostType::class, $post, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $postRepository->save($post);
+            $this->postService->save($post);
             $this->addFlash('success', 'message.updated.successfully');
 
             return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
@@ -159,9 +186,8 @@ class PostController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Request        $request        HTTP request
-     * @param Post           $post           Post entity
-     * @param PostRepository $postRepository Post repository
+     * @param Request $request HTTP request
+     * @param Post    $post    Post entity
      *
      * @return Response HTTP response
      *
@@ -175,7 +201,7 @@ class PostController extends AbstractController
      *     name="post_delete",
      * )
      */
-    public function delete(Request $request, Post $post, PostRepository $postRepository): Response
+    public function delete(Request $request, Post $post): Response
     {
         $form = $this->createForm(FormType::class, $post, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -186,7 +212,7 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $category = $post->getCategory();
-            $postRepository->delete($post);
+            $this->postService->delete($post);
             $this->addFlash('success', 'message.deleted.successfully');
 
             return $this->redirectToRoute('category_show', ['id' => $category->getId()]);
@@ -204,9 +230,8 @@ class PostController extends AbstractController
     /**
      * Mark action.
      *
-     * @param Post               $post               Post entity
-     * @param int                $bool               boolean
-     * @param PostMarkRepository $postMarkRepository Post Mark Repository
+     * @param Post $post Post entity
+     * @param int  $bool boolean
      *
      * @return Response HTTP response
      *
@@ -222,10 +247,10 @@ class PostController extends AbstractController
      *     requirements={"id": "[1-9]\d*", "bool": "0|1"},
      * )
      */
-    public function mark(Post $post, int $bool, PostMarkRepository $postMarkRepository): Response
+    public function mark(Post $post, int $bool): Response
     {
         $user = $this->getUser();
-        $alreadyMarked = $postMarkRepository->alreadyVoted($post, $user);
+        $alreadyMarked = $this->postMarkService->alreadyVoted($post, $user);
         if ($alreadyMarked) {
             $this->addFlash('danger', 'message.permission.denied');
 
@@ -236,7 +261,7 @@ class PostController extends AbstractController
         $mark->setUser($user);
         $mark->setPost($post);
         $mark->setMark($bool ? 1 : -1);
-        $postMarkRepository->save($mark);
+        $this->postMarkService->save($mark);
         $this->addFlash('success', 'message.added.successfully');
 
         return $this->redirectToRoute('post_show', ['id' => $post->getId()]);

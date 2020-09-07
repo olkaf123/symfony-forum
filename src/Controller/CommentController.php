@@ -9,8 +9,8 @@ use App\Entity\CommentMark;
 use App\Entity\Post;
 use App\Entity\Comment;
 use App\Form\CommentType;
-use App\Repository\CommentMarkRepository;
-use App\Repository\CommentRepository;
+use App\Service\CommentMarkService;
+use App\Service\CommentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,11 +25,36 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends AbstractController
 {
     /**
+     * Comment service.
+     *
+     * @var \App\Service\CommentService
+     */
+    private $commentService;
+
+    /**
+     * Comment mark service.
+     *
+     * @var \App\Service\CommentMarkService
+     */
+    private $commentMarkService;
+
+    /**
+     * CommentController constructor.
+     *
+     * @param \App\Service\CommentService     $commentService     Comment service
+     * @param \App\Service\CommentMarkService $commentMarkService Comment mark service
+     */
+    public function __construct(CommentService $commentService, CommentMarkService $commentMarkService)
+    {
+        $this->commentService = $commentService;
+        $this->commentMarkService = $commentMarkService;
+    }
+
+    /**
      * Create action.
      *
-     * @param Request           $request           HTTP request
-     * @param Post              $post              Post
-     * @param CommentRepository $commentRepository Comment repository
+     * @param Request $request HTTP request
+     * @param Post    $post    Post
      *
      * @return Response HTTP response
      *
@@ -43,7 +68,7 @@ class CommentController extends AbstractController
      *     name="comment_create",
      * )
      */
-    public function create(Request $request, Post $post, CommentRepository $commentRepository): Response
+    public function create(Request $request, Post $post): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -53,7 +78,7 @@ class CommentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setPost($post);
             $comment->setUser($user);
-            $commentRepository->save($comment);
+            $this->commentService->save($comment);
             $this->addFlash('success', 'message.created.successfully');
 
             return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
@@ -71,9 +96,8 @@ class CommentController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request           $request           HTTP request
-     * @param Comment           $comment           Comment entity
-     * @param CommentRepository $commentRepository Comment repository
+     * @param Request $request HTTP request
+     * @param Comment $comment Comment entity
      *
      * @return Response HTTP response
      *
@@ -87,13 +111,13 @@ class CommentController extends AbstractController
      *     name="comment_edit",
      * )
      */
-    public function edit(Request $request, Comment $comment, CommentRepository $commentRepository): Response
+    public function edit(Request $request, Comment $comment): Response
     {
         $form = $this->createForm(CommentType::class, $comment, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $commentRepository->save($comment);
+            $this->commentService->save($comment);
             $this->addFlash('success', 'message.updated.successfully');
 
             return $this->redirectToRoute('post_show', ['id' => $comment->getPost()->getId()]);
@@ -111,9 +135,8 @@ class CommentController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Request           $request           HTTP request
-     * @param Comment           $comment           Comment entity
-     * @param CommentRepository $commentRepository Comment repository
+     * @param Request $request HTTP request
+     * @param Comment $comment Comment entity
      *
      * @return Response HTTP response
      *
@@ -127,7 +150,7 @@ class CommentController extends AbstractController
      *     name="comment_delete",
      * )
      */
-    public function delete(Request $request, Comment $comment, CommentRepository $commentRepository): Response
+    public function delete(Request $request, Comment $comment): Response
     {
         $form = $this->createForm(FormType::class, $comment, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -138,7 +161,7 @@ class CommentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $post = $comment->getPost();
-            $commentRepository->delete($comment);
+            $this->commentService->delete($comment);
             $this->addFlash('success', 'message.deleted.successfully');
 
             return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
@@ -156,9 +179,8 @@ class CommentController extends AbstractController
     /**
      * Mark action.
      *
-     * @param Comment               $comment               Comment entity
-     * @param int                   $bool                  boolean
-     * @param CommentMarkRepository $commentMarkRepository Comment Mark Repository
+     * @param Comment $comment Comment entity
+     * @param int     $bool    boolean
      *
      * @return Response HTTP response
      *
@@ -174,10 +196,10 @@ class CommentController extends AbstractController
      *     requirements={"id": "[1-9]\d*", "bool": "0|1"},
      * )
      */
-    public function mark(Comment $comment, int $bool, CommentMarkRepository $commentMarkRepository): Response
+    public function mark(Comment $comment, int $bool): Response
     {
         $user = $this->getUser();
-        $alreadyMarked = $commentMarkRepository->alreadyVoted($comment, $user);
+        $alreadyMarked = $this->commentMarkService->alreadyVoted($comment, $user);
         if ($alreadyMarked) {
             $this->addFlash('danger', 'message.permission.denied');
 
@@ -188,7 +210,7 @@ class CommentController extends AbstractController
         $mark->setUser($user);
         $mark->setComment($comment);
         $mark->setMark($bool ? 1 : -1);
-        $commentMarkRepository->save($mark);
+        $this->commentMarkService->save($mark);
         $this->addFlash('success', 'message.added.successfully');
 
         return $this->redirectToRoute('post_show', ['id' => $comment->getPost()->getId()]);
