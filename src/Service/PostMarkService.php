@@ -48,15 +48,15 @@ class PostMarkService
     /**
      * Already voted.
      *
-     * @param Post $post post
-     * @param User $user user
+     * @param Post      $post post
+     * @param User|null $user user
      *
      * @return bool
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function alreadyVoted(Post $post, User $user)
+    public function alreadyVoted(Post $post, User $user = null)
     {
         return $this->postMarkRepository->alreadyVoted($post, $user);
     }

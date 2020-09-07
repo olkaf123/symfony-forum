@@ -48,15 +48,15 @@ class CommentMarkService
     /**
      * Already voted.
      *
-     * @param Comment $comment comment
-     * @param User    $user    user
+     * @param Comment   $comment comment
+     * @param User|null $user    user
      *
      * @return bool
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function alreadyVoted(Comment $comment, User $user)
+    public function alreadyVoted(Comment $comment, User $user = null)
     {
         return $this->commentMarkRepository->alreadyVoted($comment, $user);
     }
