@@ -39,9 +39,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/categories.*, roles: ROLE_MOD }
          - { path: ^/posts/\d+.+, roles: ROLE_USER }
          - { path: ^/categories/\d+.+, roles: ROLE_USER }
          - { path: ^/edit, roles: ROLE_USER }
          - { path: ^/comments.*, roles: ROLE_USER }
+         - { path: ^/categories.*, roles: ROLE_MOD }
          - { path: ^/logout$, roles: IS_AUTHENTICATED_REMEMBERED }
